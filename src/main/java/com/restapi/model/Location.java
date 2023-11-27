@@ -28,9 +28,9 @@ public class Location {
     @Column(nullable = false, length = 200)
     private String name;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] photo;
+    @Column
+    private String photo;
+
     @Column(nullable = false, length = 100)
     private String caravanName;
 

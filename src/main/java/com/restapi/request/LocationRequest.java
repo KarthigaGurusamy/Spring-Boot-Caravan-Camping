@@ -52,7 +52,7 @@ public class LocationRequest {
     @Min(value = 1, message = "StayCount must be greater than or equal to 1")
     private Integer stayCount;
 
-    private byte[] photo;
+    private String photo;
 
 
 }

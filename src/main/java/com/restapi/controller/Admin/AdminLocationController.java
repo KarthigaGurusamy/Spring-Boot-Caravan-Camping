@@ -11,6 +11,9 @@ import com.restapi.response.common.APIResponse;
 import com.restapi.service.LocationService;
 import com.restapi.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +21,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -55,14 +62,6 @@ public class AdminLocationController {
     }
 
 
-    @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-        Location location = locationService.getLocation(id);
-//        return new ResponseEntity<byte[]>(ImageUtils.decompressImage(location.getPhoto()), HttpStatus.OK);
-        System.out.println(location.getPhoto());
-        return ResponseEntity.ok().body(ImageUtils.decompressImage(location.getPhoto()));
-    }
-
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<APIResponse> createLocation(@RequestParam("photo") MultipartFile photo,
                                                       @RequestParam("campingId") Long campingId,
@@ -73,17 +72,16 @@ public class AdminLocationController {
                                                       @RequestParam("price") Double price,
                                                       @RequestParam("stayCount") Integer stayCount) throws IOException {
 
+        String file = storageService.storeFile(photo);
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setAddress(address);
         locationRequest.setName(name);
-        locationRequest.setPhoto(photo.getBytes());
+        locationRequest.setPhoto(file);
         locationRequest.setCampingId(campingId);
         locationRequest.setCaravanName(caravanName);
         locationRequest.setPrice(price);
         locationRequest.setCaravanCapacity(caravanCapacity);
         locationRequest.setStayCount(stayCount);
-
-        String file = storageService.storeFile(photo);
 
         List<Location> locationList = locationService.createLocation(locationRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
@@ -105,5 +103,24 @@ public class AdminLocationController {
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(locationList);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/downloadFile/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long id) throws IOException {
+
+        File file = locationService.getFile(id);
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }

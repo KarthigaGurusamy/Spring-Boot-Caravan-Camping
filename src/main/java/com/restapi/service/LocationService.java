@@ -10,9 +10,12 @@ import com.restapi.repository.LocationRepository;
 import com.restapi.request.LocationRequest;
 import com.restapi.response.LocationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,10 @@ public class LocationService {
 
     @Autowired
     private CampingRepository campingRepository;
+
+    @Autowired
+    private StorageService storageService;
+
     public List<Location> findAll() {
         return locationRepository.findAll();
     }
@@ -65,12 +72,21 @@ public class LocationService {
     }
 
     public List<Location> findLocationByCampingId(Long id) {
-        List<Location> optionalLocationList = locationRepository.findLocations(id).orElseThrow(()-> new ResourceNotFoundException("campingId","campingId",id));
+        List<Location> optionalLocationList = locationRepository.findLocations(id).orElseThrow(() -> new ResourceNotFoundException("campingId", "campingId", id));
         return locationDto.mapToOptionalLocation(optionalLocationList);
     }
 
     public Location getLocation(Long id) {
         Optional<Location> location = locationRepository.findById(id);
-        return  location.get();
+        return location.get();
+    }
+
+    public File getFile(Long id) throws IOException {
+        Location location = locationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("id", "id", id));
+
+        Resource resource = storageService.loadFileAsResource(location.getPhoto());
+
+        return resource.getFile();
     }
 }

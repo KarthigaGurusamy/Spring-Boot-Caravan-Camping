@@ -60,7 +60,7 @@ public class BookingDto {
         bookedLocation.setStayCount(location.getStayCount());
         bookedLocation.setDescription(location.getCamping().getDescription());
         bookedLocation.setCampingPhoto(location.getCamping().getPhoto());
-        bookedLocation.setLocationPhoto(location.getPhoto());
+//        bookedLocation.setLocationPhoto(location.getPhoto());
         return bookedLocation;
     }
 

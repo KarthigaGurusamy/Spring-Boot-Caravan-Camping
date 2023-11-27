@@ -30,6 +30,7 @@ public class LocationDto {
         location.setCaravanCapacity(locationRequest.getCaravanCapacity());
         location.setStayCount(locationRequest.getStayCount());
         location.setName(locationRequest.getName());
+        location.setPhoto(locationRequest.getPhoto());
 
         return location;
     }
@@ -47,6 +48,7 @@ public class LocationDto {
         location.setCaravanCapacity(optionalLocation.get().getCaravanCapacity());
         location.setStayCount(optionalLocation.get().getStayCount());
         location.setName(optionalLocation.get().getName());
+        location.setPhoto(optionalLocation.get().getPhoto());
 
         return location;
     }
@@ -65,6 +67,7 @@ public class LocationDto {
             locationObj.setStayCount(location.getStayCount());
             locationObj.setName(location.getName());
             locationObj.setStaff(location.getStaff());
+            locationObj.setPhoto(location.getPhoto());
             locationList.add(locationObj);
         }
         return locationList;
