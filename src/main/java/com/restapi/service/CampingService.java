@@ -8,8 +8,9 @@ import com.restapi.response.CampingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CampingService {
@@ -25,12 +26,14 @@ public class CampingService {
     }
 
 
+    @Transactional
     public CampingResponse createCamping(CampingRequest campingRequest) {
         Camping camping = campingDto.mapToCamping(campingRequest);
         campingRepository.save(camping);
         return findAll();
     }
 
+    @Transactional
     public CampingResponse updateCamping(CampingRequest campingRequest) {
         Camping camping = campingDto.mapToCamping(campingRequest);
         campingRepository.save(camping);
@@ -41,5 +44,10 @@ public class CampingService {
         campingRepository.deleteById(id);
         return findAll();
 
+    }
+
+    public Camping findCampingById(Long id) {
+        Optional<Camping> campingOptional = campingRepository.findById(id);
+        return campingDto.mapToCampingOptional(campingOptional);
     }
 }

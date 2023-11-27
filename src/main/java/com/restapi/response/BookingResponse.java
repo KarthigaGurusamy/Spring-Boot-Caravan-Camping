@@ -40,6 +40,7 @@ public class BookingResponse {
     private String campingName;
 
     private String description;
+    private String status;
 
     private byte[] campingPhoto;
 

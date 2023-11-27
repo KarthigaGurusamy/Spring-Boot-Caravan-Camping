@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @ToString
 public class StaffRequest {
 
-    @Min(value = 1, message = "Id must be greater than or equal to 1")
+//    @Min(value = 1, message = "Id must be greater than or equal to 1")
     private Long id;
 
     @NotEmpty

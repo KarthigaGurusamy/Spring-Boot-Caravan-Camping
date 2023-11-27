@@ -63,6 +63,7 @@ public class BookedLocation {
     private byte[] locationPhoto;
 
 
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

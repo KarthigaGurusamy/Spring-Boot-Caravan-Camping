@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class LocationRequest {
 
 
-    @Min(value = 1, message = "Id must be greater than or equal to 1")
+//    @Min(value = 1, message = "Id must be greater than or equal to 1")
     private Long id;
 
     @NotNull(message = "campingId should not be empty")
@@ -30,6 +30,10 @@ public class LocationRequest {
     @NotEmpty
     @Size(min = 20, message = "Address should have at least 20 characters")
     private String address;
+
+    @NotEmpty
+    @Size(min = 5, message = "Name should have at least 5 characters")
+    private String name;
 
     @NotEmpty
     @Size(min = 5, message = "Caravan name should have at least 5 characters")

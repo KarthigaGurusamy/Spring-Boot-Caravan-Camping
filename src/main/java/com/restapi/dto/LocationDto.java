@@ -29,6 +29,8 @@ public class LocationDto {
         location.setCaravanName(locationRequest.getCaravanName());
         location.setCaravanCapacity(locationRequest.getCaravanCapacity());
         location.setStayCount(locationRequest.getStayCount());
+        location.setName(locationRequest.getName());
+
         return location;
     }
 
@@ -44,6 +46,27 @@ public class LocationDto {
         location.setCaravanName(optionalLocation.get().getCaravanName());
         location.setCaravanCapacity(optionalLocation.get().getCaravanCapacity());
         location.setStayCount(optionalLocation.get().getStayCount());
+        location.setName(optionalLocation.get().getName());
+
         return location;
+    }
+
+    public List<Location> mapToOptionalLocation(List<Location> optionalLocationList) {
+        List<Location> locationList = new ArrayList<>();
+        for (Location location : optionalLocationList) {
+
+            Location locationObj = new Location();
+            locationObj.setId(location.getId());
+            locationObj.setPhoto(location.getPhoto());
+            locationObj.setAddress(location.getAddress());
+            locationObj.setPrice(location.getPrice());
+            locationObj.setCaravanName(location.getCaravanName());
+            locationObj.setCaravanCapacity(location.getCaravanCapacity());
+            locationObj.setStayCount(location.getStayCount());
+            locationObj.setName(location.getName());
+            locationObj.setStaff(location.getStaff());
+            locationList.add(locationObj);
+        }
+        return locationList;
     }
 }

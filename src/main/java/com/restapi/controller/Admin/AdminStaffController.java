@@ -1,10 +1,9 @@
 package com.restapi.controller.Admin;
 
-import com.restapi.model.Location;
 import com.restapi.model.Role;
 import com.restapi.model.Staff;
-import com.restapi.request.LocationRequest;
 import com.restapi.request.StaffRequest;
+import com.restapi.response.StaffResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/staff")
 @RolesAllowed(Role.ADMIN)
-public class StaffController {
+public class AdminStaffController {
     @Autowired
     private APIResponse apiResponse;
 
@@ -30,17 +29,17 @@ public class StaffController {
     @GetMapping("/all")
     public ResponseEntity<APIResponse> getAllLocation()
     {
-        List<Staff> staffList = staffService.findAll();
+        List<StaffResponse> staffResponseList = staffService.findAll();
         apiResponse.setStatus(HttpStatus.OK.value());
-        apiResponse.setData(staffList);
+        apiResponse.setData(staffResponseList);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     @PostMapping("/allocate")
     public ResponseEntity<APIResponse> allocateStaff(@Valid @RequestBody StaffRequest staffRequest)
     {
-        List<Staff> staffList = staffService.allocateStaff(staffRequest);
+        List<StaffResponse> staffResponseList = staffService.allocateStaff(staffRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
-        apiResponse.setData(staffList);
+        apiResponse.setData(staffResponseList);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

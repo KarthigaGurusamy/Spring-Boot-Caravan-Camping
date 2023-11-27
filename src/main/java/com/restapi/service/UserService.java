@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -28,6 +30,8 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    @Transactional
     public AuthResponse register(RegisterRequest registerRequest) {
         AppUser appUser = authDto.mapToAppUser(registerRequest);
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));

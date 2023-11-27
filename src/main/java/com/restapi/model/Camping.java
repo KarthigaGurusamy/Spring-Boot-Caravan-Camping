@@ -33,9 +33,10 @@ public class Camping {
     private byte[] photo;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "camping")
+    @OneToMany(mappedBy = "camping",cascade = CascadeType.ALL)
     private List<Location> locationList= new ArrayList<>();
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

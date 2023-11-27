@@ -36,6 +36,9 @@ public class Booking {
     @JoinColumn(name = "user_id",referencedColumnName ="id")
     private AppUser appUser;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
+    private List<BookedUsers> bookedUsersList=new ArrayList<>();
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -49,6 +50,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**")
                 .permitAll()
+                .antMatchers("/api/home/**")
+                .permitAll()
                 .antMatchers("/swagger-ui/**")
                 .permitAll()
                 .anyRequest()
@@ -57,7 +60,7 @@ public class SecurityConfig {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.csrf().disable();
-        httpSecurity.cors().disable();
+        httpSecurity.cors(Customizer.withDefaults());
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);

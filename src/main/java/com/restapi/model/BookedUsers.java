@@ -1,6 +1,5 @@
 package com.restapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,26 +8,31 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Staff {
+public class BookedUsers {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String staffName;
+    private String name;
 
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "location_id",referencedColumnName = "id")
-    private Location location;
+    @Column(nullable = false,length = 100)
+    private String gender;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private Integer age;
+    @ManyToOne
+    @JoinColumn(name = "booking_id",referencedColumnName = "id")
+    private Booking booking;
+
 }

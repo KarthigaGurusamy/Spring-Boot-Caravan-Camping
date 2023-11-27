@@ -25,6 +25,9 @@ public class Location {
     @Column(nullable = false, length = 200)
     private String address;
 
+    @Column(nullable = false, length = 200)
+    private String name;
+
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] photo;
@@ -41,15 +44,15 @@ public class Location {
     @Column(nullable = false)
     private Integer stayCount;
 
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "staff_id",referencedColumnName = "id")
+    @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
     private Staff staff;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "camping_id",referencedColumnName ="id")
     private Camping camping;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

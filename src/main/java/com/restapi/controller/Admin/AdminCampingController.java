@@ -1,5 +1,6 @@
 package com.restapi.controller.Admin;
 
+import com.restapi.model.Camping;
 import com.restapi.model.Role;
 import com.restapi.request.CampingRequest;
 import com.restapi.response.CampingResponse;
@@ -32,6 +33,14 @@ public class AdminCampingController {
         CampingResponse campingResponse = campingService.findAll();
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(campingResponse.getCampingResponseList());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse> getAllCamping(@PathVariable Long id)
+    {
+        Camping camping = campingService.findCampingById(id);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(camping);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

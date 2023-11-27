@@ -2,6 +2,7 @@ package com.restapi.service;
 
 import com.restapi.dto.LocationDto;
 import com.restapi.exception.common.ResourceNotFoundException;
+import com.restapi.model.Booking;
 import com.restapi.model.Camping;
 import com.restapi.model.Location;
 import com.restapi.repository.CampingRepository;
@@ -11,6 +12,7 @@ import com.restapi.response.LocationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,9 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public List<Location> createCamping(LocationRequest locationRequest) {
+
+    @Transactional
+    public List<Location> createLocation(LocationRequest locationRequest) {
         Location location = locationDto.mapToLocation(locationRequest);
         Camping camping = campingRepository.findById(locationRequest.getCampingId())
                 .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
@@ -39,7 +43,8 @@ public class LocationService {
         return findAll();
     }
 
-    public List<Location> updateCamping(LocationRequest locationRequest) {
+    @Transactional
+    public List<Location> updateLocation(LocationRequest locationRequest) {
         Location location = locationDto.mapToLocation(locationRequest);
         Camping camping = campingRepository.findById(locationRequest.getCampingId())
                 .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
@@ -49,7 +54,7 @@ public class LocationService {
         return findAll();
     }
 
-    public List<Location> deleteCamping(Long id) {
+    public List<Location> deleteLocation(Long id) {
         locationRepository.deleteById(id);
         return findAll();
     }
@@ -57,5 +62,15 @@ public class LocationService {
     public Location findById(Long id) {
         Optional<Location> location = locationRepository.findById(id);
         return locationDto.mapToLocationResponse(location);
+    }
+
+    public List<Location> findLocationByCampingId(Long id) {
+        List<Location> optionalLocationList = locationRepository.findLocations(id).orElseThrow(()-> new ResourceNotFoundException("campingId","campingId",id));
+        return locationDto.mapToOptionalLocation(optionalLocationList);
+    }
+
+    public Location getLocation(Long id) {
+        Optional<Location> location = locationRepository.findById(id);
+        return  location.get();
     }
 }

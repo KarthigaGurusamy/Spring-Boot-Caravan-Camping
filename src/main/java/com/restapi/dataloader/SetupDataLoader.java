@@ -43,8 +43,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Role userRole = createRoleIfNotFound(Role.USER);
         Role adminRole = createRoleIfNotFound(Role.ADMIN);
 //        Create user
-        createUserIfNotFound("user", "user", userRole);
-        createUserIfNotFound("admin", "admin", adminRole);
+        createUserIfNotFound("user", "user", userRole,"user@gmail.com");
+        createUserIfNotFound("admin", "admin", adminRole,"admin@gmail.com");
 
         createPaymentStatus("Success");
 
@@ -69,13 +69,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Transactional
     private AppUser createUserIfNotFound(final String username, final String password,
-                                         final Role role) {
+                                         final Role role, final String email) {
         Optional<AppUser> optionalUser = userRepository.findByUsername(username);
         AppUser user = null;
         if (optionalUser.isEmpty()) {
             user = new AppUser();
             user.setUsername(username);
             user.setName(username);
+            user.setEmail(email);
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setRoles(role);
             user = userRepository.save(user);

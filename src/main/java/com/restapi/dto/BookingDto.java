@@ -1,9 +1,11 @@
 package com.restapi.dto;
 
 import com.restapi.model.BookedLocation;
+import com.restapi.model.BookedUsers;
 import com.restapi.model.Booking;
 import com.restapi.model.Location;
 import com.restapi.request.BookingRequest;
+import com.restapi.request.UserDetailsRequest;
 import com.restapi.response.BookingResponse;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,7 @@ public class BookingDto {
             bookingResponse.setDescription(booking.getBookedLocation().getDescription());
             bookingResponse.setCampingPhoto(booking.getBookedLocation().getCampingPhoto());
             bookingResponse.setLocationPhoto(booking.getBookedLocation().getLocationPhoto());
+            bookingResponse.setStatus(booking.getPaymentStatus().getStatus());
             bookingResponseList.add(bookingResponse);
 
         }
@@ -79,4 +82,11 @@ public class BookingDto {
         return bookedLocation;
     }
 
+    public BookedUsers mapToUserDetails(UserDetailsRequest userDetailsRequest) {
+        BookedUsers bookedUsers = new BookedUsers();
+        bookedUsers.setAge(userDetailsRequest.getAge());
+        bookedUsers.setName(userDetailsRequest.getName());
+        bookedUsers.setGender(userDetailsRequest.getGender());
+        return bookedUsers;
+    }
 }

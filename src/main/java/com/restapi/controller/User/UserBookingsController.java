@@ -4,7 +4,9 @@ import com.restapi.model.Location;
 import com.restapi.model.Role;
 import com.restapi.request.BookingRequest;
 import com.restapi.request.LocationRequest;
+import com.restapi.request.UserDetailsRequest;
 import com.restapi.response.BookingResponse;
+import com.restapi.response.UserDetailsResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.UserBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,10 @@ public class UserBookingsController {
     @Autowired
     private UserBookingService userBookingService;
 
-    @GetMapping("/all")
-    public ResponseEntity<APIResponse> getAllBookings(@Valid @RequestBody BookingRequest bookingRequest)
+    @GetMapping("/all/{id}")
+    public ResponseEntity<APIResponse> getAllBookings(@PathVariable @NotNull @Min(value = 1, message = "ID must be greater than or equal to 1") Long id)
     {
-        List<BookingResponse> bookingResponses = userBookingService.findAll(bookingRequest);
+        List<BookingResponse> bookingResponses = userBookingService.findAll(id);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(bookingResponses);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -41,16 +43,25 @@ public class UserBookingsController {
     @PostMapping("/create")
     public ResponseEntity<APIResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest)
     {
-        List<BookingResponse> bookingResponses = userBookingService.createCamping(bookingRequest);
+        List<BookingResponse> bookingResponses = userBookingService.createBooking(bookingRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(bookingResponses);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/details")
+    public ResponseEntity<APIResponse> userDetailsForBooking(@Valid @RequestBody UserDetailsRequest userDetailsRequest)
+    {
+        String userDetailsResponses = userBookingService.userDetailsForBooking(userDetailsRequest);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(userDetailsResponses);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<APIResponse> updateBooking(@Valid @RequestBody BookingRequest bookingRequest)
     {
-        List<BookingResponse> bookingResponses = userBookingService.updateCamping(bookingRequest);
+        List<BookingResponse> bookingResponses = userBookingService.updateBooking(bookingRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(bookingResponses);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -59,7 +70,7 @@ public class UserBookingsController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<APIResponse> deleteBooking(@PathVariable @NotNull @Min(value = 1, message = "ID must be greater than or equal to 1") Long id)
     {
-        List<BookingResponse> bookingResponses = userBookingService.deleteCamping(id);
+        List<BookingResponse> bookingResponses = userBookingService.deleteBooking(id);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(bookingResponses);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
