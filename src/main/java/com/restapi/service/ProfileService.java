@@ -37,14 +37,13 @@ public class ProfileService {
                 .orElseThrow(() -> new ResourceNotFoundException("UserId",
                         "UserId", profileRequest.getUserId()));
         profile.setAppUser(appUser);
-
         profileRepository.save(profile);
-        return profile;
+        return getUserProfile(profileRequest.getUserId());
 
     }
 
     public Profile getUserProfile(Long id) {
-        Optional<Profile> profile = profileRepository.findById(id);
+        Profile profile = profileRepository.findByUserId(id);
         return profileDto.mapToProfile(profile);
     }
 
@@ -55,14 +54,9 @@ public class ProfileService {
                         "UserId", profileRequest.getUserId()));
         profile.setAppUser(appUser);
 
-        List<Profile> profileList = profileRepository.findAll();
-        boolean isProfile= false;
-        for(Profile p : profileList)
-        {
-            if(p.getId()==profileRequest.getUserId());
-            isProfile=true;
-        }
-        if(!isProfile)
+        Profile isProfile = profileRepository.findByUserId(profileRequest.getUserId());
+
+        if(isProfile==null)
         {
             profileRepository.save(profile);
 

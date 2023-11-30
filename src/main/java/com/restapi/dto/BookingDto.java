@@ -9,7 +9,10 @@ import com.restapi.request.UserDetailsRequest;
 import com.restapi.response.BookingResponse;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +30,9 @@ public class BookingDto {
             bookingResponse.setUserId(booking.getAppUser().getId());
             bookingResponse.setUserName(booking.getAppUser().getUsername());
             bookingResponse.setName(booking.getAppUser().getName());
-            bookingResponse.setAddress(booking.getBookedLocation().getAddress());
             bookingResponse.setFromDate(booking.getBookedLocation().getFromDate());
             bookingResponse.setToDate(booking.getBookedLocation().getToDate());
+            bookingResponse.setAddress(booking.getBookedLocation().getAddress());
             bookingResponse.setCampingName(booking.getBookedLocation().getCampingName());
             bookingResponse.setCaravanName(booking.getBookedLocation().getCaravanName());
             bookingResponse.setCaravanCapacity(booking.getBookedLocation().getCaravanCapacity());
@@ -39,6 +42,17 @@ public class BookingDto {
             bookingResponse.setCampingPhoto(booking.getBookedLocation().getCampingPhoto());
             bookingResponse.setLocationPhoto(booking.getBookedLocation().getLocationPhoto());
             bookingResponse.setStatus(booking.getPaymentStatus().getStatus());
+//            String pattern ="yyyy-MM-dd";
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+//            try {
+//                Date fromDate =simpleDateFormat.parse(booking.getBookedLocation().getFromDate().toString());
+//                bookingResponse.setFromDate(fromDate);
+//
+//                Date toDate = simpleDateFormat.parse(booking.getBookedLocation().getToDate().toString());
+//                bookingResponse.setToDate(toDate);
+//            } catch (ParseException e) {
+//                throw new RuntimeException(e);
+//            }
             bookingResponseList.add(bookingResponse);
 
         }
@@ -51,6 +65,7 @@ public class BookingDto {
             bookedLocation.setId(bookingRequest.getId());
         }
         bookedLocation.setAddress(location.getAddress());
+        bookedLocation.setLocationId(bookingRequest.getLocationId());
         bookedLocation.setFromDate(bookingRequest.getFromDate());
         bookedLocation.setToDate(bookingRequest.getToDate());
         bookedLocation.setCampingName(location.getCamping().getCampingName());

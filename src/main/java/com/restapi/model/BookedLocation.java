@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,13 +27,18 @@ public class BookedLocation {
     @Column(nullable = false, length = 200)
     private String address;
 
+    @Column(nullable = false)
+    private Long locationId;
+
     @OneToMany(mappedBy = "bookedLocation")
     private List<Booking> booking = new ArrayList<>();
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fromDate;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date toDate;
 
     @Column(nullable = false, length = 100)
@@ -54,15 +60,10 @@ public class BookedLocation {
     @Column(nullable = false, length = 200)
     private String description;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] campingPhoto;
-
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] locationPhoto;
-
-
+    @Column
+    private String campingPhoto;
+    @Column
+    private String locationPhoto;
 
     @CreationTimestamp
     @Column(updatable = false)

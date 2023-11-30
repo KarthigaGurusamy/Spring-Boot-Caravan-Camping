@@ -3,6 +3,7 @@ package com.restapi.controller.User;
 import com.restapi.model.Location;
 import com.restapi.model.Role;
 import com.restapi.request.BookingRequest;
+import com.restapi.request.CheckBookingRequest;
 import com.restapi.request.LocationRequest;
 import com.restapi.request.UserDetailsRequest;
 import com.restapi.response.BookingResponse;
@@ -46,6 +47,15 @@ public class UserBookingsController {
         List<BookingResponse> bookingResponses = userBookingService.createBooking(bookingRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(bookingResponses);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/checkAvailability")
+    public ResponseEntity<APIResponse> checkAvailability(@Valid @RequestBody CheckBookingRequest bookingRequest)
+    {
+        Boolean isAvailable = userBookingService.checkAvailability(bookingRequest);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(isAvailable);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

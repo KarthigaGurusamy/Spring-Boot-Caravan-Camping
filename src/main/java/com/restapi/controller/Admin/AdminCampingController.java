@@ -6,10 +6,13 @@ import com.restapi.request.CampingRequest;
 import com.restapi.response.CampingResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.CampingService;
+import com.restapi.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -26,6 +29,9 @@ public class AdminCampingController {
 
     @Autowired
     private CampingService campingService;
+    @Autowired
+    private StorageService storageService;
+
 
     @GetMapping("/all")
     public ResponseEntity<APIResponse> getAllCamping()
@@ -44,18 +50,35 @@ public class AdminCampingController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<APIResponse> createCamping(@Valid @RequestBody CampingRequest campingRequest)
+    @PostMapping(value="/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<APIResponse> createCamping(@RequestParam("photo") MultipartFile photo,
+                                                     @RequestParam("campingName") String campingName,
+                                                     @RequestParam("description") String description)
     {
+        String file = storageService.storeFile(photo);
+        CampingRequest campingRequest = new CampingRequest();
+        campingRequest.setCampingName(campingName);
+        campingRequest.setDescription(description);
+        campingRequest.setPhoto(file);
+
         CampingResponse campingResponse = campingService.createCamping(campingRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(campingResponse.getCampingResponseList());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<APIResponse> updateCamping(@Valid @RequestBody CampingRequest campingRequest)
+    @PutMapping(value="/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<APIResponse> updateCamping(@RequestParam("photo") MultipartFile photo,
+                                                     @RequestParam("campingName") String campingName,
+                                                     @RequestParam("description") String description,
+    @RequestParam("id") Long id)
     {
+        String file = storageService.storeFile(photo);
+        CampingRequest campingRequest = new CampingRequest();
+        campingRequest.setCampingName(campingName);
+        campingRequest.setId(id);
+        campingRequest.setDescription(description);
+        campingRequest.setPhoto(file);
         CampingResponse campingResponse = campingService.updateCamping(campingRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(campingResponse.getCampingResponseList());

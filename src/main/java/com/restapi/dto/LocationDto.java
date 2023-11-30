@@ -48,6 +48,7 @@ public class LocationDto {
         location.setCaravanCapacity(optionalLocation.get().getCaravanCapacity());
         location.setStayCount(optionalLocation.get().getStayCount());
         location.setName(optionalLocation.get().getName());
+        location.setCamping(optionalLocation.get().getCamping());
         location.setPhoto(optionalLocation.get().getPhoto());
 
         return location;

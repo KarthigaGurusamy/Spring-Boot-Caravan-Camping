@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -52,4 +53,7 @@ public class UserService {
         return authDto.mapToAuthResponse(appUser);
     }
 
+    public List<AuthResponse> findAll() {
+        return authDto.mapToAllUsersAuthResponse(userRepository.findAll());
+    }
 }

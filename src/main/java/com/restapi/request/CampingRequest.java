@@ -25,7 +25,7 @@ public class CampingRequest {
     @Size(min = 20, message = "Description should have at least 50 characters")
     private String description;
 
-    private byte[] photo;
+    private String photo;
 
 
 

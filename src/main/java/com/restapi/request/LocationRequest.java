@@ -39,6 +39,8 @@ public class LocationRequest {
     @Size(min = 5, message = "Caravan name should have at least 5 characters")
     private String caravanName;
 
+    private String campingName;
+
     @NotNull(message = "caravan capacity should not empty")
     @Min(value = 1, message = "Caravan capacity must be greater than or equal to 1")
     private Integer caravanCapacity;

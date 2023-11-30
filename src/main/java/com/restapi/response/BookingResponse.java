@@ -42,9 +42,9 @@ public class BookingResponse {
     private String description;
     private String status;
 
-    private byte[] campingPhoto;
+    private String campingPhoto;
 
-    private byte[] locationPhoto;
+    private String locationPhoto;
 
 }
 

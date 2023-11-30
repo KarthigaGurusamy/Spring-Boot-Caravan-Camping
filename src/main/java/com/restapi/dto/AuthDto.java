@@ -5,6 +5,9 @@ import com.restapi.request.RegisterRequest;
 import com.restapi.response.AuthResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class AuthDto {
 
@@ -27,5 +30,20 @@ public class AuthDto {
         authResponse.setEmail(appUser.getEmail());
 
         return authResponse;
+    }
+
+    public List<AuthResponse> mapToAllUsersAuthResponse(List<AppUser> all) {
+        List<AuthResponse> authResponses = new ArrayList<>();
+        for(AppUser appUser:all)
+        {
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setId(appUser.getId());
+            authResponse.setName(appUser.getName());
+            authResponse.setUsername(appUser.getUsername());
+            authResponse.setRole(appUser.getRoles().getName());
+            authResponse.setEmail(appUser.getEmail());
+            authResponses.add(authResponse);
+        }
+        return authResponses;
     }
 }

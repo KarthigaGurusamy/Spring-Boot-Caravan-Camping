@@ -1,6 +1,7 @@
 package com.restapi.service;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
@@ -69,18 +70,19 @@ public class StorageService {
         }
     }
 
-    public Resource loadFileAsResource(String fileName) {
+    public File loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
-                System.out.println("Result");
-                return resource;
+                return resource.getFile();
             } else {
                 throw new RuntimeException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
             throw new RuntimeException("File not found " + fileName, ex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

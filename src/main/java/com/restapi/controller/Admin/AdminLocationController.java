@@ -89,8 +89,27 @@ public class AdminLocationController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<APIResponse> updateLocation(@Valid @RequestBody LocationRequest locationRequest) {
+    @PutMapping(value="/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<APIResponse> updateLocation(@RequestParam("photo") MultipartFile photo,
+                                                      @RequestParam("campingId") Long campingId,
+                                                      @RequestParam("address") String address,
+                                                      @RequestParam("name") String name,
+                                                      @RequestParam("caravanName") String caravanName,
+                                                      @RequestParam("caravanCapacity") Integer caravanCapacity,
+                                                      @RequestParam("price") Double price,
+                                                      @RequestParam("stayCount") Integer stayCount,
+                                                      @RequestParam("id") Long id) {
+        String file = storageService.storeFile(photo);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setAddress(address);
+        locationRequest.setName(name);
+        locationRequest.setId(id);
+        locationRequest.setPhoto(file);
+        locationRequest.setCampingId(campingId);
+        locationRequest.setCaravanName(caravanName);
+        locationRequest.setPrice(price);
+        locationRequest.setCaravanCapacity(caravanCapacity);
+        locationRequest.setStayCount(stayCount);
         List<Location> locationList = locationService.updateLocation(locationRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(locationList);

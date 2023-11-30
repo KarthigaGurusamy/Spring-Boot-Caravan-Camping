@@ -5,6 +5,7 @@ import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
 import com.restapi.request.BookingRequest;
+import com.restapi.request.CheckBookingRequest;
 import com.restapi.request.UserDetailsRequest;
 import com.restapi.response.BookingResponse;
 import com.restapi.response.UserDetailsResponse;
@@ -41,6 +42,7 @@ public class UserBookingService {
 
     @Autowired
     private BookingDto bookingDto;
+
 
 
     public List<BookingResponse> findAll(Long id) {
@@ -109,6 +111,21 @@ public class UserBookingService {
         bookedUsers.setBooking(booking);
         userDetailsRepository.save(bookedUsers);
         return "Success!";
+
+    }
+
+    public Boolean checkAvailability(CheckBookingRequest bookingRequest) {
+        List<BookedLocation> bookedLocations = userBookedRepository.checkAvailability(bookingRequest.getFromDate(),bookingRequest.getToDate(),bookingRequest.getLocationId());
+        System.out.println(bookedLocations.size());
+
+        if(bookedLocations.isEmpty())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
     }
 }

@@ -85,8 +85,6 @@ public class LocationService {
         Location location = locationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("id", "id", id));
 
-        Resource resource = storageService.loadFileAsResource(location.getPhoto());
-
-        return resource.getFile();
+        return  storageService.loadFileAsResource(location.getPhoto());
     }
 }

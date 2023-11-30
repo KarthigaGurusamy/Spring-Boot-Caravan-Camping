@@ -47,7 +47,6 @@ public class Location {
     @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
     private Staff staff;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "camping_id",referencedColumnName ="id")
     private Camping camping;

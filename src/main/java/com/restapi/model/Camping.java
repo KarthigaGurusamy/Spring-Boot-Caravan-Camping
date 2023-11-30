@@ -28,9 +28,8 @@ public class Camping {
     @Column(nullable = false, length = 200)
     private String description;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] photo;
+    @Column
+    private String photo;
 
     @JsonIgnore
     @OneToMany(mappedBy = "camping",cascade = CascadeType.ALL)

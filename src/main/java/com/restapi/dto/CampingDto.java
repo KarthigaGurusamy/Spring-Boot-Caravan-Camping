@@ -31,6 +31,8 @@ public class CampingDto {
         camping.setCampingName(campingRequest.getCampingName());
         camping.setPhoto(campingRequest.getPhoto());
         camping.setDescription(campingRequest.getDescription());
+        camping.setPhoto(campingRequest.getPhoto());
+
         return camping;
     }
 
